@@ -145,10 +145,9 @@ static void map_init(void)
     irq.counter = irq.latch = 0;
 }
 
-static mem_read_handler_t map_memread[] =
+static mem_write_handler_t map_memwrite[] =
 {
-   { 0x8000, 0xFFFF, map_write }
-   // {0x6000, 0x7FFF, map162_ram_read},
+   { 0x8000, 0xFFFF, map_write },
    LAST_MEMORY_HANDLER
 };
 
@@ -162,6 +161,6 @@ mapintf_t map23_intf =
     .get_state  = NULL,
     .set_state  = NULL,
     .mem_read   = NULL,
-    .mem_write  = map_memread,
+    .mem_write  = map_memwrite,
 	NULL,
 };

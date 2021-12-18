@@ -161,12 +161,12 @@ mapintf_t map163_intf =
 {
    163,             /* mapper number */
    "Nanjing 163",   /* mapper name */
-   map162_init,     /* init routine */
+   map_init,     /* init routine */
    NULL,            /* vblank callback */
-   map162_hblank,   /* hblank callback */
+   map_hblank,   /* hblank callback */
    NULL,            /* get state (snss) */
    NULL,            /* set state (snss) */
-   map162_memread,  /* memory read structure */
-   map162_memwrite, /* memory write structure */
+   map_memread,  /* memory read structure */
+   map_memwrite, /* memory write structure */
    NULL             /* external sound device */
 };

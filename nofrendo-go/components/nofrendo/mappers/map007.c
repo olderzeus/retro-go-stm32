@@ -43,7 +43,7 @@ static void map_write(uint32 address, uint8 value)
 
 static void map_init(void)
 {
-    is_battletoads = (cart->checksum == 0x279710DC);
+    is_battletoads = (nes_getptr()->rominfo->checksum == 0x279710DC);
 
     if (is_battletoads)
        MESSAGE_INFO("Enabled Battletoads mirroring hack\n");

@@ -60,7 +60,7 @@ static void map_init(void)
 
 static mem_write_handler_t map_memwrite[] =
 {
-   {0x6000, 0x6004, map_reg_write},
+   {0x6000, 0x6004, map_write},
    LAST_MEMORY_HANDLER
 };
 

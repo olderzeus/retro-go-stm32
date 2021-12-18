@@ -57,7 +57,7 @@ static void map_hblank (int vblank)
     /* Increment the counter if it is enabled and check for strike */
     if (irq.enabled)
     {
-        irq.counter += nes_getptr()->cycles_per_scanline;
+        irq.counter += nes_getptr()->cycles_per_line;
 
         /* IRQ is triggered after 24576 M2 cycles */
         if (irq.counter >= 0x6000)

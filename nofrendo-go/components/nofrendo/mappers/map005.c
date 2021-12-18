@@ -542,7 +542,7 @@ mapintf_t map5_intf =
 {
    5,                /* mapper number */
    "MMC5",           /* mapper name */
-   map5_init,        /* init routine */
+   map_init,        /* init routine */
    NULL,             /* vblank callback */
    map_hblank,      /* hblank callback */
    map_getstate,    /* get state (snss) */

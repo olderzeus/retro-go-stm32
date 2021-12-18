@@ -66,7 +66,7 @@ static void map_write(uint32 address, uint8 value)
 
 static mem_write_handler_t map_memwrite[] =
 {
-   { 0x8000, 0xFFFF, map_write }
+   { 0x8000, 0xFFFF, map_write },
    LAST_MEMORY_HANDLER
 };
 

@@ -41,7 +41,7 @@ static void map_hblank(int scanline)
     /* Increment the counter if it is enabled and check for strike */
     if (irq.enabled)
     {
-        irq.counter += nes_getptr()->cycles_per_scanline;
+        irq.counter += nes_getptr()->cycles_per_line;
 
         /* Counter triggered on overflow into Q16 */
         if (irq.counter & 0x10000)

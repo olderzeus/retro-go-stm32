@@ -34,7 +34,7 @@ static void map_write(uint32 address, uint8 value)
         mmc_bankrom(16, 0x8000, value);
 }
 
-static void map_init(rom_t *cart)
+static void map_init(void)
 {
     mmc_bankrom(16, 0xc000, MMC_LASTBANK);
     mmc_bankrom(16, 0x8000, 0);
@@ -42,7 +42,7 @@ static void map_init(rom_t *cart)
 
 static mem_write_handler_t map_memwrite[] =
 {
-    { 0x8000, 0xFFFF, map_write }
+    { 0x8000, 0xFFFF, map_write },
     LAST_MEMORY_HANDLER
 };
 
@@ -56,7 +56,7 @@ mapintf_t map71_intf =
     .hblank     = NULL,
     .get_state  = NULL,
     .set_state  = NULL,
-    .mem_read   = {},
+    .mem_read   = NULL,
     .mem_write  = map_memwrite,
 	NULL
 };

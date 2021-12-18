@@ -38,13 +38,13 @@ static void map_write(uint32 address, uint8 value)
     mmc_bankvrom(8, 0x0000, (value >> 5) & 0x03);
 }
 
-static void map_init(rom_t *cart)
+static void map_init(void)
 {
-    if (cart->mirroring == PPU_MIRROR_FOUR)
-    {
-        ppu_setmirroring(PPU_MIRROR_SCR0);
-        switchable_screen = true;
-    }
+    // if (cart->mirroring == PPU_MIRROR_FOUR)
+    // {
+    //     ppu_setmirroring(PPU_MIRROR_SCR0);
+    //     switchable_screen = true;
+    // }
 
     mmc_bankrom(16, 0x8000, 0);
     mmc_bankrom(16, 0xC000, MMC_LASTBANK);
