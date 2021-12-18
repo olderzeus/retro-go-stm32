@@ -17,57 +17,46 @@
 ** must bear this legend.
 **
 **
-** map093.c: Mapper 93 interface
+** map071.c: Clone of 002 (UNROM) for Codemasters/Camerica games
 **
 */
 
 #include <nofrendo.h>
 #include <nes_mmc.h>
-#include <nes_ppu.h>
+
 
 static void map_write(uint32 address, uint8 value)
 {
-    /* ($8000-$FFFF) D7-D4 = switch $8000-$BFFF D0: mirror */
-    mmc_bankrom(16, 0x8000, value >> 4);
-
-    if (value & 1)
-        ppu_setmirroring(PPU_MIRROR_VERT);
+    // SCR0/1 mirroring only used by Fire Hawk
+    if ((address & 0xF000) == 0x9000)
+        ppu_setmirroring((value & 4) ? PPU_MIRROR_SCR1 : PPU_MIRROR_SCR0);
     else
-        ppu_setmirroring(PPU_MIRROR_HORI);
+        mmc_bankrom(16, 0x8000, value);
+}
+
+static void map_init(rom_t *cart)
+{
+    mmc_bankrom(16, 0xc000, MMC_LASTBANK);
+    mmc_bankrom(16, 0x8000, 0);
 }
 
 static mem_write_handler_t map_memwrite[] =
 {
-   { 0x8000, 0xFFFF, map_write },
-   LAST_MEMORY_HANDLER
+    { 0x8000, 0xFFFF, map_write }
+    LAST_MEMORY_HANDLER
 };
 
-mapintf_t map93_intf =
+
+mapintf_t map71_intf =
 {
-   93, /* mapper number */
-   "Mapper 93", /* mapper name */
-   NULL, /* init routine */
-   NULL, /* vblank callback */
-   NULL, /* hblank callback */
-   NULL, /* get state (snss) */
-   NULL, /* set state (snss) */
-   NULL, /* memory read structure */
-   map_memwrite, /* memory write structure */
-   NULL /* external sound device */
+    .number     = 71,
+    .name       = "Mapper 71",
+    .init       = map_init,
+    .vblank     = NULL,
+    .hblank     = NULL,
+    .get_state  = NULL,
+    .set_state  = NULL,
+    .mem_read   = {},
+    .mem_write  = map_memwrite,
+	NULL
 };
-
-/*
-** $Log: map093.c,v $
-** Revision 1.2  2001/04/27 14:37:11  neil
-** wheeee
-**
-** Revision 1.1  2001/04/27 12:54:40  neil
-** blah
-**
-** Revision 1.1.1.1  2001/04/27 07:03:54  neil
-** initial
-**
-** Revision 1.1  2000/12/11 12:33:48  matt
-** initial revision
-**
-*/

@@ -1533,6 +1533,11 @@ IRAM_ATTR void nes6502_irq(void)
    }
 }
 
+IRAM_ATTR void nes6502_irq_clear(void)
+{
+   cpu.p_reg &= I_FLAG;
+}
+
 /* Set dead cycle period */
 IRAM_ATTR void nes6502_burn(int cycles)
 {
