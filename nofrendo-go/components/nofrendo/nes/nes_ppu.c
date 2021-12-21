@@ -336,8 +336,10 @@ IRAM_ATTR void ppu_write(uint32 address, uint8 value)
 
             if (false == ppu.vram_present && addr >= 0x3000)
                ppu.vaddr -= 0x1000;
-
-            PPU_MEM_WRITE(addr, value);
+            if( ppu.vram_present || (!ppu.vram_present && (addr >= 0x2000)) )
+            {
+                PPU_MEM_WRITE(addr, value);
+            }
          }
       }
       else
