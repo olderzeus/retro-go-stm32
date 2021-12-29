@@ -176,7 +176,7 @@ INLINE void ppu_oamdma(uint8 value)
 
    /* make the CPU spin for DMA cycles */
    nes6502_burn(513);
-   nes6502_release();
+   // nes6502_release();
 }
 
 /* Read from $2000-$2007 */
@@ -562,8 +562,8 @@ INLINE void ppu_renderbg(uint8 *vidbuf)
       /* Tile number from nametable */
       int tile_index = PPU_MEM_READ(refresh_vaddr + x_tile);
 
-      /* Handle $FD/$FE tile VROM switching (PunchOut) */
-      if (ppu.latchfunc)
+      /* Handle $FD/$FE magic tile CHR-ROM switching (MMC2/MMC4) */
+      if (ppu.latchfunc && (tile_index == 0xFD || tile_index == 0xFE))
          ppu.latchfunc(ppu.bg_base, tile_index);
 
       /* Fetch tile and draw it */
@@ -625,8 +625,8 @@ INLINE void ppu_renderoam(uint8 *vidbuf, int scanline, bool draw)
           || (0 == sprite_y) || (sprite_y >= 240))
          continue;
 
-      /* Handle $FD/$FE tile VROM switching (PunchOut) */
-      if (ppu.latchfunc)
+      /* Handle $FD/$FE magic tile CHR-ROM switching (MMC2/MMC4) */
+      if (ppu.latchfunc && (sprite->tile == 0xFD || sprite->tile == 0xFE))
          ppu.latchfunc(sprite_offset, sprite->tile);
 
       int tile_addr, y_offset;
