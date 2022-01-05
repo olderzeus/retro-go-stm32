@@ -50,20 +50,27 @@ static void map_write(uint32 address, uint8 value)
         break;
 
     case 0x8001:
+        printf("map074: handled write: address=%p, value=0x%x, reg=0x%x\n", (void*)address, value, reg8000 & 0x07);
         switch (reg8000 & 0x07)
         {
         case 0:
-                value &= 0xFE;
+            value &= 0xFE;
+            if ((reg8000 == 8) || (reg8000 == 9))
+            {
+                mmc_bankchr(1, vrombase ^ 0x0000, value & 0x07, CHR_RAM);
+                mmc_bankchr(1, vrombase ^ 0x0400, (value & 0x07) + 1, CHR_RAM);
+            }
+            else
+            {
                 mmc_bankvrom(1, vrombase ^ 0x0000, value);
                 mmc_bankvrom(1, vrombase ^ 0x0400, value + 1);
+            }
             break;
-
         case 1:
             value &= 0xFE;
             mmc_bankvrom(1, vrombase ^ 0x0800, value);
             mmc_bankvrom(1, vrombase ^ 0x0C00, value + 1);
             break;
-
         case 2:
             mmc_bankvrom(1, vrombase ^ 0x1000, value);
             break;

@@ -207,7 +207,7 @@ rominfo_t *rom_load(const char *filename)
       rominfo->vrom = rom_ptr;
       rom_ptr += VROM_BANK_LENGTH * rominfo->vrom_banks;
    }
-   else
+   else if (rominfo->vram_banks)
    {
       rominfo->vram = calloc(VRAM_BANK_LENGTH, rominfo->vram_banks);
       if (NULL == rominfo->vram)

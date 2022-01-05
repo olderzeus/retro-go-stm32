@@ -114,11 +114,9 @@ void mmc_bankchr(int size, uint32 address, int bank, uint8 *base)
    size_t banks = 128;
 
    if (base == CHR_ANY)
-   {
-      base = mmc_getinfo()->vrom ?: mmc_getinfo()->vram;
-      banks = mmc_getinfo()->vrom_banks ?: mmc_getinfo()->vram_banks;
-   }
-   else if (base == CHR_ROM)
+      base = mmc_getinfo()->vrom_banks ? CHR_ROM : CHR_RAM;
+
+   if (base == CHR_ROM)
    {
       base = mmc_getinfo()->vrom;
       banks = mmc_getinfo()->vrom_banks;
