@@ -1,3 +1,6 @@
+#include "build/config.h"
+
+#if defined(ENABLE_EMULATOR_NES) && FORCE_NOFRENDO == 1
 /*
 ** Nofrendo (c) 1998-2000 Matthew Conte (matt@conte.com)
 **
@@ -30,9 +33,12 @@
 #include <nes.h>
 
 #include "gw_lcd.h"
+#include "game_genie.h"
+#include "odroid_settings.h"
 
 #define NES_OVERDRAW (8)
 
+static uint8_t nes_framebuffer[(NES_SCREEN_WIDTH+16)*NES_SCREEN_HEIGHT];
 static uint8_t bitmap_data[2][sizeof(bitmap_t) + (sizeof(uint8 *) * NES_SCREEN_HEIGHT)];
 static bitmap_t *framebuffers[2];
 static nes_t nes;
@@ -142,12 +148,16 @@ void nes_setcompathacks(void)
 }
 
 /* insert a cart into the NES */
-int nes_insertcart(const char *filename)
+int nes_insertcart(const char *filename, const char **game_genie_codes, int game_genie_codes_count)
 {
    /* rom file */
    nes.rominfo = rom_load(filename);
    if (NULL == nes.rominfo)
       goto _fail;
+
+#if CHEAT_CODES == 1
+   gameGenieInitialize(game_genie_codes, game_genie_codes_count);
+#endif
 
    /* mapper */
    nes.mmc = mmc_init(nes.rominfo);
@@ -200,6 +210,9 @@ void nes_shutdown(void)
    ppu_shutdown();
    apu_shutdown();
    nes6502_shutdown();
+#if CHEAT_CODES == 1
+   gameGenieShutdown();
+#endif
 }
 
 /* Setup region-dependant timings */
@@ -228,7 +241,7 @@ void nes_setregion(region_t region)
 
 void bmp_init(bitmap_t *bitmap, int index, int width , int height, int overdraw)
 {
-   bitmap->data = emulator_framebuffer;
+   bitmap->data = nes_framebuffer;
    bitmap->width = NES_SCREEN_WIDTH;
    bitmap->height = NES_SCREEN_HEIGHT;
    bitmap->pitch = NES_SCREEN_WIDTH + (overdraw * 2);
@@ -282,3 +295,5 @@ _fail:
    nes_shutdown();
    return false;
 }
+
+#endif

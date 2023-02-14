@@ -1,3 +1,6 @@
+#include "build/config.h"
+
+#ifdef ENABLE_EMULATOR_GB
 #include "stdbool.h"
 #include "stdarg.h"
 #include "defs.h"
@@ -70,7 +73,7 @@ void IRAM_ATTR emu_run(bool draw)
 
 	// sys_vsync();
 
-    rtc_tick();
+    // rtc_tick();
 
 	sound_mix();
 
@@ -97,3 +100,5 @@ void emu_die(const char *fmt, ...)
 	va_end(ap);
 	abort();
 }
+
+#endif
