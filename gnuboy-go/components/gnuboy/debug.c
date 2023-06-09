@@ -1,6 +1,6 @@
 #include "build/config.h"
 
-#ifdef ENABLE_EMULATOR_GB
+#if defined(ENABLE_EMULATOR_GB) || defined(ENABLE_EMULATOR_GBC)
 #include <stdlib.h>
 #include <stdio.h>
 
